@@ -1,0 +1,45 @@
+---
+import { ui } from "../i18n/ui";
+import { path, type Lang } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+  slug: string;
+  title: string;
+  summary: string;
+  year: string;
+  status: "live" | "launching" | "pending" | "collab";
+  stack: string[];
+}
+const { lang, slug, title, summary, year, status, stack } = Astro.props;
+const t = ui[lang].projects;
+---
+
+<li>
+  <a href={path(lang, `projects/${slug}`)}>
+    <div class="meta">
+      <span>{year}</span>
+      <span class="status" data-status={status}>{t.status[status]}</span>
+    </div>
+    <h3>{title}</h3>
+    <p class="summary">{summary}</p>
+    <p class="stack">{stack.join(" · ")}</p>
+    <span class="more">{t.caseStudy} <span aria-hidden="true">→</span></span>
+  </a>
+</li>
+
+<style>
+  li { border-top: 1px solid var(--line); }
+  li:last-child { border-bottom: 1px solid var(--line); }
+  a { display: grid; gap: 0.6rem; padding-block: var(--space-4); text-decoration: none; transition: padding 0.25s; }
+  a:hover { padding-inline-start: 0.75rem; }
+  a:hover h3 { color: var(--accent); }
+  h3 { transition: color 0.2s; }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: var(--step--1); color: var(--muted); }
+  .status::before { content: ""; display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 50%; margin-inline-end: 0.45rem; background: var(--muted); }
+  .status[data-status="live"]::before { background: #2f9e5b; }
+  .status[data-status="launching"]::before { background: var(--accent); }
+  .summary { max-width: 52ch; }
+  .stack { font-size: var(--step--1); color: var(--muted); }
+  .more { font-size: 0.95rem; font-weight: 500; }
+</style>

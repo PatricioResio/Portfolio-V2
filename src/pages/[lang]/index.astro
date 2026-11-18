@@ -1,0 +1,157 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Hero from "../../components/Hero.astro";
+import Section from "../../components/Section.astro";
+import ProjectRow from "../../components/ProjectRow.astro";
+import { ui, socials } from "../../i18n/ui";
+import { langs, path, type Lang } from "../../i18n/utils";
+
+// Genera una página por idioma: /es/ y /en/
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = ui[lang];
+
+// Proyectos de este idioma, ordenados por el campo `order` del frontmatter
+const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang}/`))).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<Base lang={lang}>
+  <Hero lang={lang} />
+
+  <Section id="projects" number={t.projects.number} title={t.projects.title}>
+    <p class="lede intro">{t.projects.intro}</p>
+    <ul class="projects">
+      {projects.map((p) => (
+        <ProjectRow lang={lang} slug={p.id.split("/")[1]} {...p.data} />
+      ))}
+    </ul>
+  </Section>
+
+  <Section id="experience" number={t.experience.number} title={t.experience.title}>
+    <ol class="timeline">
+      {t.experience.items.map((item) => (
+        <li>
+          <p class="period muted">{item.period}</p>
+          <div>
+            <h3>{item.role}</h3>
+            <p class="org">{item.org}</p>
+            <ul class="points">
+              {item.points.map((pt) => <li>{pt}</li>)}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section id="stack" number={t.stack.number} title={t.stack.title}>
+    <dl class="stack">
+      {t.stack.groups.map((g) => (
+        <div>
+          <dt class="eyebrow">{g.label}</dt>
+          <dd>{g.items.join(" · ")}</dd>
+        </div>
+      ))}
+    </dl>
+  </Section>
+
+  <Section id="education" number={t.education.number} title={t.education.title}>
+    <ol class="timeline">
+      {t.education.items.map((item) => (
+        <li>
+          <p class="period muted">{item.period}</p>
+          <div>
+            <h3>{item.name}</h3>
+            <p class="org">
+              {item.detail}
+              {"inProgress" in item && <span class="badge">{item.inProgress}</span>}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <div class="langs">
+      <p class="eyebrow">{t.education.languagesTitle}</p>
+      <ul>
+        {t.education.languages.map((l) => <li><strong>{l.name}</strong> — {l.level}</li>)}
+      </ul>
+    </div>
+  </Section>
+
+  <Section id="contact" number={t.contact.number} title={t.contact.title}>
+    <p class="lede">{t.contact.lede}</p>
+    <p class="mail"><a class="link" href={`mailto:${socials.email}`}>{socials.email}</a></p>
+
+    <!-- Formulario con Netlify Forms: no necesita JavaScript ni servicios externos -->
+    <form name="contact" method="POST" action={path(lang, "thanks")} data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="sr-only"><label>No completar: <input name="bot-field" /></label></p>
+      <label>
+        <span>{t.contact.name}</span>
+        <input type="text" name="name" required autocomplete="name" />
+      </label>
+      <label>
+        <span>{t.contact.email}</span>
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <label>
+        <span>{t.contact.message}</span>
+        <textarea name="message" rows="5" required></textarea>
+      </label>
+      <button class="btn btn--primary" type="submit">{t.contact.send}</button>
+    </form>
+  </Section>
+</Base>
+
+<style>
+  .intro { margin-bottom: var(--space-4); }
+
+  /* Línea de tiempo (experiencia y educación) */
+  .timeline > li { display: grid; gap: 0.5rem; padding-block: var(--space-3); border-top: 1px solid var(--line); }
+  .timeline > li:last-child { border-bottom: 1px solid var(--line); }
+  .timeline h3 { font-size: var(--step-1); }
+  .period { font-size: var(--step--1); letter-spacing: 0.04em; }
+  .org { color: var(--muted); margin-top: 0.25rem; }
+  .points { margin-top: var(--space-2); display: grid; gap: 0.4rem; max-width: 60ch; }
+  .points li { padding-inline-start: 1.1rem; position: relative; }
+  .points li::before { content: "—"; position: absolute; inset-inline-start: 0; color: var(--accent); }
+  .badge { display: inline-block; margin-inline-start: 0.6rem; padding: 0.1rem 0.7rem; border-radius: var(--radius); background: var(--accent); color: var(--accent-ink); font-size: 0.75rem; font-weight: 500; }
+
+  /* Stack */
+  .stack { display: grid; gap: var(--space-3); margin: 0; }
+  .stack div { border-top: 1px solid var(--line); padding-top: var(--space-2); display: grid; gap: 0.35rem; }
+  .stack dd { margin: 0; font-size: var(--step-1); font-family: var(--font-display); }
+
+  .langs { margin-top: var(--space-4); display: grid; gap: 0.5rem; }
+  .langs ul { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; }
+
+  /* Contacto */
+  .mail { margin-block: var(--space-3) var(--space-5); font-family: var(--font-display); font-size: var(--step-2); overflow-wrap: anywhere; }
+  form { display: grid; gap: var(--space-3); max-width: 38rem; }
+  form label { display: grid; gap: 0.4rem; font-size: var(--step--1); color: var(--muted); }
+  form input[type="text"], form input[type="email"], textarea {
+    width: 100%;
+    padding: 0.7rem 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    font-size: var(--step-0);
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+  form input:focus-visible, textarea:focus-visible { outline: none; border-bottom-color: var(--accent); }
+  textarea { resize: vertical; }
+  form .btn { justify-self: start; }
+
+  @media (min-width: 48rem) {
+    .timeline > li { grid-template-columns: 11rem 1fr; gap: var(--space-3); }
+    .stack div { grid-template-columns: 11rem 1fr; gap: var(--space-3); }
+  }
+</style>

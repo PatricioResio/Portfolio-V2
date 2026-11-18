@@ -1,0 +1,22 @@
+---
+// Raíz "/": elige /es/ o /en/ según el idioma del navegador.
+// Es la única página con un script mínimo; el resto del sitio no lleva JavaScript.
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Patricio Resio</title>
+    <link rel="canonical" href="/es/" />
+    <noscript><meta http-equiv="refresh" content="0; url=/es/" /></noscript>
+    <script is:inline>
+      var l = ((navigator.languages && navigator.languages[0]) || navigator.language || "es").toLowerCase();
+      location.replace(l.indexOf("es") === 0 ? "/es/" : "/en/");
+    </script>
+  </head>
+  <body>
+    <p><a href="/es/">Español</a> · <a href="/en/">English</a></p>
+  </body>
+</html>

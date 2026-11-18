@@ -1,0 +1,85 @@
+---
+import { ui, socials } from "../i18n/ui";
+import { otherLang, path, type Lang } from "../i18n/utils";
+
+interface Props { lang: Lang; rest?: string }
+const { lang, rest = "" } = Astro.props;
+const t = ui[lang];
+const other = otherLang(lang);
+const home = path(lang);
+const links = [
+  { href: `${home}#projects`, label: t.nav.projects },
+  { href: `${home}#experience`, label: t.nav.experience },
+  { href: `${home}#education`, label: t.nav.education },
+  { href: `${home}#contact`, label: t.nav.contact },
+];
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href={home}>Patricio Resio</a>
+
+    <div class="tools">
+      <a class="pill" href={socials.cv[lang]} target="_blank" rel="noopener">{t.nav.cv}</a>
+      <a class="pill" href={path(other, rest)} lang={other} hreflang={other} aria-label={t.nav.switchLang}>
+        {other.toUpperCase()}
+      </a>
+    </div>
+
+    <nav aria-label={t.nav.label}>
+      <ul>
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .tools { display: flex; gap: 0.5rem; align-items: center; }
+  .pill {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.3rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
+
+  nav { order: 3; width: 100%; }
+  ul { display: flex; gap: 1.1rem; overflow-x: auto; scrollbar-width: none; padding-bottom: 0.1rem; }
+  ul::-webkit-scrollbar { display: none; }
+  nav a { font-size: 0.9rem; text-decoration: none; color: var(--muted); white-space: nowrap; transition: color 0.2s; }
+  nav a:hover { color: var(--ink); }
+
+  @media (min-width: 48rem) {
+    nav { order: 0; width: auto; margin-left: auto; }
+    .tools { order: 2; }
+    ul { gap: 2rem; }
+    nav a { font-size: 0.95rem; }
+  }
+</style>

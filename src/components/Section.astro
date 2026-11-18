@@ -1,0 +1,25 @@
+---
+// Estructura común de cada sección: número + título a la izquierda, contenido a la derecha.
+interface Props { id: string; number: string; title: string }
+const { id, number, title } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-title`}>
+  <div class="container grid">
+    <header>
+      <span class="eyebrow">{number}</span>
+      <h2 id={`${id}-title`}>{title}</h2>
+    </header>
+    <div class="body"><slot /></div>
+  </div>
+</section>
+
+<style>
+  section { padding-block: var(--space-6); border-top: 1px solid var(--line); }
+  .grid { display: grid; gap: var(--space-4); }
+  header { display: grid; gap: 0.5rem; align-content: start; }
+  @media (min-width: 60rem) {
+    .grid { grid-template-columns: 1fr 2.3fr; gap: var(--space-5); }
+    header { position: sticky; top: 6rem; align-self: start; }
+  }
+</style>
