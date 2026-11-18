@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Portfolio — Patricio Resio
 
 Astro + CSS puro. Español e inglés (`/es/`, `/en/`), sin JavaScript en las páginas.
@@ -63,3 +64,7 @@ public/                  CVs en PDF, favicon, og.png (preview al compartir)
 - ¿Qué son las content collections y qué te da el esquema de validación?
 - ¿Cómo lo hiciste accesible? (skip link, landmarks, foco visible, `prefers-reduced-motion`, contraste)
 - ¿Cómo mediste el rendimiento y qué decisiones lo mejoraron? (sin JS, fuentes locales, imágenes optimizadas)
+=======
+# Portfolio-V2
+Porfolio created with astro
+>>>>>>> 61e16c727dbb0f68ee259afd1371987ac3591648
