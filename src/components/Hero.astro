@@ -9,13 +9,13 @@ const t = ui[lang].hero;
 
 <section class="hero">
   <div class="container">
-    <p class="eyebrow">{t.eyebrow}</p>
-    <h1>{t.title}</h1>
+    <p class="eyebrow" data-rise style="--i:0">{t.eyebrow}</p>
+    <h1 data-rise="t" style="--i:1">{t.title}</h1>
 
     <div class="below">
       <div>
-        <p class="lede">{t.lede}</p>
-        <div class="actions">
+        <p class="lede" data-rise="t" style="--i:2">{t.lede}</p>
+        <div class="actions" data-rise style="--i:3">
           <a class="btn btn--primary" href={socials.cv[lang]} target="_blank" rel="noopener">{t.cv}</a>
           <a class="btn" href={`${path(lang)}#contact`}>{t.contact}</a>
           <a class="btn" href={socials.linkedin} target="_blank" rel="noopener">
@@ -29,7 +29,7 @@ const t = ui[lang].hero;
         </div>
       </div>
 
-      <dl class="proof">
+      <dl class="proof" data-rise style="--i:4">
         {t.proof.map((p) => (
           <div>
             <dt>{p.value}</dt>

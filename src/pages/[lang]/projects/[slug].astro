@@ -26,7 +26,7 @@ const t = ui[lang];
     <a class="back link" href={`${path(lang)}#projects`}>{t.caseStudy.back}</a>
 
     <header>
-      <h1>{d.title}</h1>
+      <h1 style={`view-transition-name: project-${slug}`}>{d.title}</h1>
       <p class="lede">{d.summary}</p>
     </header>
 

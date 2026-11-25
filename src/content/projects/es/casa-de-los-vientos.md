@@ -5,7 +5,7 @@ role: "Desarrollo frontend"
 year: "2026"
 status: "launching"
 stack: ["React", "TypeScript", "Tailwind CSS"]
-order: 1
+order: 2
 links:
   - { label: "Código", url: "https://github.com/AleMot94/Hostal-CDLV-Beta" }
 ---

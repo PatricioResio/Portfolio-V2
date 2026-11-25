@@ -1,70 +1,69 @@
-<<<<<<< HEAD
 # Portfolio — Patricio Resio
 
-Astro + CSS puro. Español e inglés (`/es/`, `/en/`), sin JavaScript en las páginas.
+Bilingual (ES/EN) developer portfolio with project case studies. Built with **Astro** and plain CSS, and it ships **zero JavaScript** on its pages.
 
-## Requisitos
-Node **22.23.4 o más** (Astro 7). Verificalo con `node -v`.
+**Live site:** <URL_DEL_SITIO>
 
-## Comandos
+## Highlights
+
+- **No client-side JavaScript.** Pages are static HTML and CSS. Interactivity can be added later with Astro islands, but nothing needs it today.
+- **Multilingual by URL.** `/es/` and `/en/` routes with `hreflang` tags. The root redirects based on the browser's language. Crawlable URLs instead of a client-side toggle.
+- **Validated content.** Each case study is a Markdown file per language, typed with Astro content collections. If the frontmatter is invalid, the build fails.
+- **Accessible by design.** Skip link, landmarks, visible focus states, contrast checks, and full support for `prefers-reduced-motion`.
+- **Native CSS animations.** Scroll-driven animations (`animation-timeline: view()` / `scroll()`), a reading progress bar, and the View Transitions API. Titles animate from the project list to the detail page. All of it is gated behind `prefers-reduced-motion: no-preference` and degrades gracefully in unsupported browsers.
+- **Performance-minded.** Self-hosted fonts, optimized images, and hero animations that only touch `transform` so they don't delay LCP.
+- **Design tokens.** Colors, typography, and spacing live in CSS variables, with a dark mode block.
+- **Contact form** handled by Netlify Forms.
+
+## Tech stack
+
+Astro 7 · TypeScript · CSS (no framework) · Netlify
+
+## Getting started
+
+Requires Node **22.23.4 or later** (`node -v` to check).
+
 ```bash
-npm install        # una sola vez
-npm run dev        # servidor local en http://localhost:4321
-npm run build      # genera la carpeta dist/ (lo que se publica)
-npm run preview    # prueba el build local
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # static output in dist/
+npm run preview   # serve the production build locally
 ```
 
-## Estructura
+## Project structure
+
 ```
 src/
-  styles/global.css      Tokens de diseño (colores, tipografía, espaciado) + base
-  i18n/ui.ts             TODOS los textos, en es y en (misma estructura)
-  i18n/utils.ts          Helpers de rutas e idioma
-  layouts/Base.astro     <head>, SEO, hreflang, cabecera y pie
-  components/            Header, Footer, Hero, Section, ProjectRow
-  content/projects/      Un .md por proyecto y por idioma (casos de estudio)
-  content.config.ts      Esquema que valida esos .md
+  styles/global.css     Design tokens + base styles + animations
+  i18n/ui.ts            All UI strings, es and en (same shape)
+  i18n/utils.ts         Route and language helpers
+  layouts/Base.astro    <head>, SEO, hreflang, header and footer
+  components/           Header, Footer, Hero, Section, ProjectRow
+  content/projects/     One .md per project per language
+  content.config.ts     Schema that validates the case studies
   pages/
-    index.astro          Raíz: redirige a /es/ o /en/ según el navegador
-    [lang]/index.astro   Home (genera /es/ y /en/)
-    [lang]/projects/[slug].astro   Caso de estudio
-    [lang]/thanks.astro  Página de "gracias" del formulario
-public/                  CVs en PDF, favicon, og.png (preview al compartir)
+    index.astro                    Redirects to /es/ or /en/
+    [lang]/index.astro             Home (generates /es/ and /en/)
+    [lang]/projects/[slug].astro   Case study page
+    [lang]/thanks.astro            Form confirmation page
+public/                 CV PDFs, favicon, og.png (social preview)
 ```
 
-## Cómo funciona (Astro, ligado a lo que ya sabés de React)
-1. **Un `.astro` es un componente.** Arriba, entre `---`, va JavaScript/TypeScript que corre **una sola vez, al construir** (no en el navegador). Abajo va el HTML. Las props se leen con `Astro.props`, como en React.
-2. **`<style>` está acotado al componente.** Los estilos de `Hero.astro` no afectan a `Header.astro`. Por eso alcanza con CSS puro, sin Tailwind.
-3. **Cero JavaScript por defecto.** Si no pedís interactividad, el navegador recibe solo HTML y CSS. Para interactividad se usan "islas" (un componente de React con `client:visible`). Ahora no hace falta ninguna.
-4. **Rutas = archivos.** `pages/[lang]/index.astro` con `getStaticPaths()` genera una página por idioma.
-5. **Content collections.** Cada proyecto es un `.md`. El frontmatter se valida con `content.config.ts` (si falta un campo, el build falla y avisa). `getCollection()` los lee y `render()` convierte el cuerpo en HTML.
-6. **Todo el look sale de variables CSS** en `global.css`. Cambiar el acento o la tipografía son 1–2 líneas.
+## Technical notes
 
-## Tareas habituales
-- **Cambiar un texto:** `src/i18n/ui.ts` (en los dos idiomas).
-- **Agregar un proyecto:** copiá `content/projects/es/ciencia-cerca.md` y su par en `en/`, cambiá el contenido y el `order`.
-- **Agregar capturas a un caso:** guardalas en `src/assets/`, y en el frontmatter `cover: "../../../assets/mi-captura.webp"` + `coverAlt`.
-- **Cambiar colores:** variables `--accent`, `--bg`, `--ink` en `global.css` (hay un bloque para modo oscuro).
-- **Dominio propio:** cambiá `site` en `astro.config.mjs`.
+**Why Astro.** The site is content-first, so there's nothing to hydrate. Astro runs component logic at build time and sends plain HTML, which gives better load performance than a React SPA for this use case.
 
-## Publicar en Netlify
-1. Repo nuevo en GitHub, subí todo (menos `node_modules`, `dist`, `.astro`: ya están en `.gitignore`).
-2. En Netlify: *Add new site → Import from Git*. Ya toma `netlify.toml` (build `npm run build`, carpeta `dist`, Node 22).
-3. **Formulario:** Netlify lo detecta solo al publicar. Activá el aviso por email en *Site configuration → Forms → Form notifications*.
+**A build-tooling gotcha.** The scroll-driven animation properties (`animation-timeline`, etc.) are written as longhand declarations instead of the `animation:` shorthand. With the shorthand, the build's CSS minifier folded the timeline into it and browsers dropped the whole rule. I found this by measuring the rendered output, not by eyeballing it.
 
-## Pendientes (están como comentarios `TODO` en los `.md`)
-- La Casa de los Vientos: link "Demo", 2 capturas propias, decisión técnica de i18n y puntajes de Lighthouse cuando esté online.
-- Trashumar: contar cómo se resuelve el lanzamiento (facturación de Firebase Storage).
-- Ciencia Cerca: una captura propia del sitio (no del stream).
-- Medir Lighthouse (móvil) de este sitio y mostrar los números en el hero.
+**Reduced motion.** Every animation lives under `prefers-reduced-motion: no-preference`, so users who opt out see none.
 
-## Para tu próxima entrevista (preguntas probables sobre este sitio)
-- ¿Por qué Astro y no React puro? ¿Qué es hidratación y por qué acá no hace falta?
-- ¿Cómo resolviste el multi-idioma? ¿Qué ventaja tienen las URLs `/es/` y `/en/` frente a un toggle?
-- ¿Qué son las content collections y qué te da el esquema de validación?
-- ¿Cómo lo hiciste accesible? (skip link, landmarks, foco visible, `prefers-reduced-motion`, contraste)
-- ¿Cómo mediste el rendimiento y qué decisiones lo mejoraron? (sin JS, fuentes locales, imágenes optimizadas)
-=======
-# Portfolio-V2
-Porfolio created with astro
->>>>>>> 61e16c727dbb0f68ee259afd1371987ac3591648
+## Deployment
+
+Deployed on Netlify from Git. `netlify.toml` sets the build command (`npm run build`), publish directory (`dist`), and Node 22. Netlify Forms detects the contact form automatically on deploy.
+
+## Customization
+
+- **Copy:** edit `src/i18n/ui.ts` (both languages).
+- **New project:** duplicate a file in `src/content/projects/es/` and its `en/` pair, then update the content and `order`.
+- **Theme:** change `--accent`, `--bg`, `--ink` in `global.css`.
+- **Custom domain:** set `site` in `astro.config.mjs`.

@@ -6,7 +6,7 @@ const { id, number, title } = Astro.props;
 
 <section id={id} aria-labelledby={`${id}-title`}>
   <div class="container grid">
-    <header>
+    <header class="reveal">
       <span class="eyebrow">{number}</span>
       <h2 id={`${id}-title`}>{title}</h2>
     </header>

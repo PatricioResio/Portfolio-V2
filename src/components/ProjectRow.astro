@@ -15,16 +15,16 @@ const { lang, slug, title, summary, year, status, stack } = Astro.props;
 const t = ui[lang].projects;
 ---
 
-<li>
+<li class="reveal">
   <a href={path(lang, `projects/${slug}`)}>
     <div class="meta">
       <span>{year}</span>
       <span class="status" data-status={status}>{t.status[status]}</span>
     </div>
-    <h3>{title}</h3>
+    <h3 style={`view-transition-name: project-${slug}`}>{title}</h3>
     <p class="summary">{summary}</p>
     <p class="stack">{stack.join(" · ")}</p>
-    <span class="more">{t.caseStudy} <span aria-hidden="true">→</span></span>
+    <span class="more">{t.caseStudy} <span class="arrow" aria-hidden="true">→</span></span>
   </a>
 </li>
 
@@ -42,4 +42,9 @@ const t = ui[lang].projects;
   .summary { max-width: 52ch; }
   .stack { font-size: var(--step--1); color: var(--muted); }
   .more { font-size: 0.95rem; font-weight: 500; }
+  .arrow { display: inline-block; transition: transform 0.25s; }
+  a:hover .arrow { transform: translateX(0.35rem); }
+  @media (prefers-reduced-motion: no-preference) {
+    .status[data-status="launching"]::before { animation: pulse 2s ease-in-out infinite; }
+  }
 </style>

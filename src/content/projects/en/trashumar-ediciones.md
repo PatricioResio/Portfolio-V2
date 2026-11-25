@@ -5,7 +5,7 @@ role: "Frontend development"
 year: "2023"
 status: "pending"
 stack: ["React", "Vite", "Firebase", "Material UI"]
-order: 2
+order: 3
 links:
   - { label: "Code", url: "https://github.com/PatricioResio/TrashumarEdiciones" }
 cover: "../../../assets/trashumar.webp"

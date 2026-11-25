@@ -3,6 +3,9 @@
 import "@fontsource-variable/fraunces";
 import "@fontsource-variable/inter";
 import "../styles/global.css";
+// URLs de las fuentes (subset latino) para precargarlas: mismo archivo que usa el CSS, así no se descarga dos veces
+import interUrl from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import frauncesUrl from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { ui } from "../i18n/ui";
@@ -34,6 +37,8 @@ const ogImage = new URL("/og.png", site).href;
     <meta name="description" content={pageDescription} />
     <meta name="theme-color" content="#f6f3ee" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)" />
+    <link rel="preload" href={interUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
     {langs.map((l) => <link rel="alternate" hreflang={l} href={new URL(path(l, rest), site).href} />)}
@@ -47,6 +52,7 @@ const ogImage = new URL("/og.png", site).href;
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
+    <div class="progress" aria-hidden="true"></div>
     <a class="skip" href="#main">{t.skip}</a>
     <Header lang={lang} rest={rest} />
     <main id="main">

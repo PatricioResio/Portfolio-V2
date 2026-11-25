@@ -36,7 +36,7 @@ const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang
   <Section id="experience" number={t.experience.number} title={t.experience.title}>
     <ol class="timeline">
       {t.experience.items.map((item) => (
-        <li>
+        <li class="reveal">
           <p class="period muted">{item.period}</p>
           <div>
             <h3>{item.role}</h3>
@@ -53,7 +53,7 @@ const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang
   <Section id="stack" number={t.stack.number} title={t.stack.title}>
     <dl class="stack">
       {t.stack.groups.map((g) => (
-        <div>
+        <div class="reveal">
           <dt class="eyebrow">{g.label}</dt>
           <dd>{g.items.join(" · ")}</dd>
         </div>
@@ -64,7 +64,7 @@ const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang
   <Section id="education" number={t.education.number} title={t.education.title}>
     <ol class="timeline">
       {t.education.items.map((item) => (
-        <li>
+        <li class="reveal">
           <p class="period muted">{item.period}</p>
           <div>
             <h3>{item.name}</h3>
@@ -76,7 +76,7 @@ const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang
         </li>
       ))}
     </ol>
-    <div class="langs">
+    <div class="langs reveal">
       <p class="eyebrow">{t.education.languagesTitle}</p>
       <ul>
         {t.education.languages.map((l) => <li><strong>{l.name}</strong> — {l.level}</li>)}
@@ -86,10 +86,10 @@ const projects = (await getCollection("projects", (p) => p.id.startsWith(`${lang
 
   <Section id="contact" number={t.contact.number} title={t.contact.title}>
     <p class="lede">{t.contact.lede}</p>
-    <p class="mail"><a class="link" href={`mailto:${socials.email}`}>{socials.email}</a></p>
+    <p class="mail reveal"><a class="link" href={`mailto:${socials.email}`}>{socials.email}</a></p>
 
     <!-- Formulario con Netlify Forms: no necesita JavaScript ni servicios externos -->
-    <form name="contact" method="POST" action={path(lang, "thanks")} data-netlify="true" netlify-honeypot="bot-field">
+    <form class="reveal" name="contact" method="POST" action={path(lang, "thanks")} data-netlify="true" netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="contact" />
       <p class="sr-only"><label>No completar: <input name="bot-field" /></label></p>
       <label>
