@@ -1,10 +1,10 @@
 ---
 title: "Trashumar Ediciones"
-summary: "Plataforma web para una editorial independiente: autenticación, perfiles de usuario, catálogo de libros y gestión de proyectos."
-role: "Desarrollo frontend"
+summary: "Plataforma web para una editorial independiente: autenticación, perfiles, catálogo editorial, proyectos y herramientas para su comunidad."
+role: "Diseño y desarrollo frontend"
 year: "2023"
-status: "pending"
-stack: ["React", "Vite", "Firebase", "Material UI"]
+status: "launching"
+stack: ["React", "Vite", "Firebase", "Material UI", "Formik", "Leaflet", "Swiper"]
 order: 2
 links:
   - { label: "Código", url: "https://github.com/PatricioResio/TrashumarEdiciones" }
@@ -14,21 +14,32 @@ coverAlt: "Página de inicio de Trashumar Ediciones con un carrusel sobre un bos
 
 ## Contexto
 
-Trashumar es una editorial nómada, federal e independiente. Necesitaba una plataforma para presentar su catálogo y recibir proyectos de autores.
+Trashumar Ediciones es una editorial independiente, nómada y federal. El proyecto necesitaba una plataforma propia para presentar su catálogo, dar visibilidad a sus proyectos y facilitar el contacto entre las personas que forman parte de su comunidad.
 
-## Qué hice
+## Desafío
 
-- Autenticación y perfiles de usuario.
-- Catálogo de libros y gestión de proyectos.
-- Integración de **Firebase** para autenticación, base de datos y almacenamiento.
-- Componentes responsive y mejoras de rendimiento, incluida la carga de imágenes.
+Desarrollar una experiencia que reuniera contenido editorial y herramientas de gestión en un mismo sitio, contemplando distintos tipos de usuarios y necesidades: lectores, autores, colaboradores y distribuidores.
+
+## Mi trabajo
+
+Me encargué del diseño y desarrollo frontend, desde la estructura inicial hasta la implementación de las principales funcionalidades.
+
+- **Autenticación y perfiles:** integración del inicio de sesión y gestión de perfiles de usuario.
+- **Catálogo y proyectos:** interfaces para presentar libros y proyectos editoriales.
+- **Comunidad y distribuidores:** perfiles con información pública, datos de contacto y zonas de distribución.
+- **Mapas:** visualización de zonas de distribución mediante Leaflet y herramientas de ubicación.
+- **Formularios:** validación y gestión de formularios con Formik y Yup, junto con integración de servicios externos.
+- **Interfaz responsive:** componentes y layouts adaptados a distintos tamaños de pantalla.
+
+## Decisiones técnicas
+
+- Utilicé **React y Vite** para desarrollar la interfaz y organizar el proyecto en componentes.
+- Integré **Firebase Authentication, Cloud Firestore y Cloud Storage** para autenticación, persistencia de datos y almacenamiento de archivos.
+- Utilicé **Material UI** con un tema personalizado para mantener consistencia visual.
+- Incorporé herramientas específicas como **Formik, Yup, Swiper y Leaflet** para resolver formularios, galerías y funcionalidades geográficas.
 
 ## Estado actual
 
-El desarrollo está listo. El lanzamiento está pendiente de resolver la facturación del proyecto en Firebase: desde 2026, Cloud Storage requiere un plan de pago vinculado.
+La primera etapa de desarrollo frontend y las integraciones existentes con Firebase forman la base funcional de la plataforma. Actualmente estoy trabajando en la creación del backend para continuar su evolución y completar la siguiente etapa del proyecto.
 
-<!--
-TODO: decidir la salida (que la editorial vincule su facturación / mover los archivos
-a otro servicio / demo con datos de ejemplo) y contarla acá como decisión de producto.
-Agregar link "Demo" cuando haya una versión online.
--->
+El desarrollo sigue activo; por eso, el estado publicado aquí corresponde a un proyecto en evolución y no a una versión final cerrada.
